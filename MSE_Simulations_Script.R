@@ -73,11 +73,11 @@ n_simulation <- 5
 for (scale_method in scale_method_vector) {
   for (h_1 in h_1_vector) {
     for (q_taylor in q_taylor_vector) {
-      
+
       # We will store the simulations for the 3 AF at together
       # This is done because of how we will later plot the simulations
       simulations_MSE_all_AF <- NULL
-      
+
       for (activation_function in activation_function_list) {
 
         # Loop over number of simulations for a given combination of hyperparameters
@@ -99,28 +99,19 @@ for (scale_method in scale_method_vector) {
 
           simulations_MSE[i] <- example$MSE.NN.vs.PR
         }
-        
-        # Store MSE values for the given AF with the other AFs
-        simulations_MSE_all_AF <- rbind(simulations_MSE_all_AF,simulations_MSE)
 
+        # Store MSE values for the given AF with the other AFs
+        simulations_MSE_all_AF <- rbind(simulations_MSE_all_AF, simulations_MSE)
       }
+
+      # Generate a name to store the simulation file,
+      simulation_name <- paste("temporal/Simulation", scale_method,
+        "Hidden", h_1,
+        "q_taylor", q_taylor,
+        sep = "_")
       
-      # Generate a name to store the simulation file, 
-      simulation_name <- paste("temporal/Simulation",scale_method,
-                               "Hidden",h_1,
-                               "q_taylor",q_taylor,
-                               sep = "_")
-      
-      print(simulation_name)
-      
-      saveRDS(simulations_MSE_all_AF,simulation_name)
-      
-      
+      # Save simulation data
+      saveRDS(simulations_MSE_all_AF, simulation_name)
     }
   }
 }
-
-
-
-
-
