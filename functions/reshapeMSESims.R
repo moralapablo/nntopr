@@ -1,0 +1,15 @@
+################################
+## Function used to reshape the MSE simulations in order to plot them nicely
+## Author: Pablo Morala
+###############################
+
+reshapeMSESims <- function(simulation, h_1, q_taylor) {
+  rownames(simulation) <- c("softplus", "tanh", "sigmoid")
+  n_sim <- dim(simulation)[2]
+  df <- as.data.frame(t(simulation))
+  df$q.Taylor <- as.factor(rep(q_taylor, n_sim))
+  df$h.1 <- as.factor(rep(h_1, n_sim))
+  df <- melt(df, id.vars = c("q.Taylor", "h.1"))
+  names(df)[c(3, 4)] <- c("Act.Function", "MSE")
+  return(df)
+}
