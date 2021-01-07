@@ -1,0 +1,1 @@
+In this folder we store temporally all data and simulations geenrated by the scripts, in order to not override the final results when running again an script.
