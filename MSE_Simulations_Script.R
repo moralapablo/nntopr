@@ -18,7 +18,6 @@ library(pracma)
 library(mvtnorm)
 library(ggplot2)
 library(cowplot)
-library(RColorBrewer)
 
 
 ####################################
@@ -62,7 +61,7 @@ h_1_vector <- c(4, 10)
 q_taylor_vector <- c(3, 5, 7)
 
 # Number of simulations for each combination of hyperparameters
-n_simulation <- 5
+n_simulation <- 1
 
 
 ####################################
