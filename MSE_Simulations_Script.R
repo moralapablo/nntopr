@@ -5,7 +5,7 @@
 ##    - The activation function (softplus, tanh, sigmoid).
 ##    - The number of hidden neurons.
 ##    - The order of the Taylor approximation q_max.
-##    - The scaling mehtod.
+##    - The scaling method, Here we will finally use only -1,1 and  0,1, not the standardizing.
 ## Author: Pablo Morala
 ###########################################################################
 
@@ -52,7 +52,7 @@ my_sigmoid <- function(x) 1 / (1 + exp(-x))
 activation_function_list <- list(softplus = my_softplus, tanh = my_tanh, sigmoid = my_sigmoid)
 
 # Scaling method
-scale_method_vector <- c("0,1", "-1,1", "standardize")
+scale_method_vector <- c("0,1", "-1,1")
 
 # Vector with different Number of hidden neurons in the NN
 h_1_vector <- c(4, 10)
@@ -61,7 +61,8 @@ h_1_vector <- c(4, 10)
 q_taylor_vector <- c(3, 5, 7)
 
 # Number of simulations for each combination of hyperparameters
-n_simulation <- 1
+n_simulation <- 500
+
 
 
 ####################################
