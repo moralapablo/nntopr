@@ -33,7 +33,7 @@ reshapingMSESimulations=function(simulation,h_1,q_taylor){
 # contain only the needed simulations  and in a fixed order,
 # so we read all the files in that directory.
 
-all_simulation_names <- list.files("./MSE Simulations final results", full.names = TRUE)
+all_simulation_names <- list.files("./Final MSE Simulations results", full.names = TRUE)
 
 ####################################
 # 3.1 - "-1,1" scaling method:
@@ -67,7 +67,6 @@ plot1 <- ggplot(df.first, aes(x = q.Taylor, y = MSE, fill = Act.Function)) +
   facet_grid(h.1 ~ .) +
   labs(fill = "Activation\n Function") +
   xlab("Taylor approximation degree (q)") +
-  ggtitle("MSE Simulations scaling to [-1,1]") +
   scale_y_continuous("MSE between NN and obtained PR", breaks = my_breaks,trans = "log10")+
   theme_cowplot(12) +
   theme(panel.grid.major.y = element_line(size = .05, color = "grey", linetype = "dashed"))
@@ -112,7 +111,6 @@ plot2 <- ggplot(df.second, aes(x=q.Taylor, y=MSE, fill=Act.Function)) +
   facet_grid(h.1 ~ .)  + 
   labs(fill = "Activation\n Function") + 
   xlab("Taylor approximation degree (q)") +
-  ggtitle("MSE Simulations scaling to [0,1]") +
   scale_y_continuous("MSE between NN and obtained PR", breaks = my_breaks,trans = "log10")+
   theme_cowplot(12) +
   theme(panel.grid.major.y = element_line( size=.05, color="grey", linetype = "dashed" ))

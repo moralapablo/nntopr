@@ -32,7 +32,7 @@ source("functions/plotTaylorAndSynapticPotentials.R")
 #     We also need the interval to adjust the Taylor error plot and the plot title.
 #     The parameters for the data generation are fixed inside the function.
 ####################################
-plotPerfomanceExample <- function(my_seed, h_1, q_taylor, fun, scale_method, my_title, taylor_interval) {
+plotPerfomanceExample <- function(my_seed, h_1, q_taylor, fun, scale_method, taylor_interval) {
   # Set random seed for reproducibility
   set.seed(my_seed)
 
@@ -79,14 +79,8 @@ plotPerfomanceExample <- function(my_seed, h_1, q_taylor, fun, scale_method, my_
 
   # Combine the plots
   plot <- plot_grid(plot.example, p, labels = c("", "c)"), nrow = 2)
-  
-  # Create the title:
-  title_plot <- ggdraw() + draw_label(my_title, fontface='bold')
-  
-  # Combine plots and title
-  final_plot <- plot_grid(title_plot, plot, ncol=1, rel_heights=c(0.1, 1))
 
-  return(final_plot)
+  return(plot)
 }
 ####################################
 # 4 - Examples
@@ -105,8 +99,7 @@ fun <- function(x) log(1 + exp(x)) # Softplus
 
 # Plot:
 taylor_interval <- 5
-my_title <- TeX("Example 1: Softplus AF, $h_1=4$, $q=3$, scaling to $\\[-1,1\\].$")
-plot_example_1 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_method, my_title, taylor_interval)
+plot_example_1 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_method, taylor_interval)
 plot_example_1
 
 # Save the plot as eps file
@@ -128,8 +121,7 @@ fun <- function(x) tanh(x) # Hyperbolic Tangent
 
 # Plot:
 taylor_interval <- 2.5
-my_title <- TeX("Example 2: Tanh AF, $h_1=4$, $q=3$, scaling to $\\[-1,1\\].$")
-plot_example_2 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_method, my_title, taylor_interval)
+plot_example_2 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_method, taylor_interval)
 plot_example_2
 
 # Save the plot as eps file
@@ -151,8 +143,7 @@ fun <- function(x) tanh(x) # Hyperbolic Tangent
 
 # Plot:
 taylor_interval <- 2.5
-my_title <- TeX("Example 3: Tanh AF, $h_1=4$, $q=3$, scaling to $\\[-1,1\\].$")
-plot_example_3 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_method, my_title, taylor_interval)
+plot_example_3 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_method, taylor_interval)
 plot_example_3
 
 # Save the plot as eps file
