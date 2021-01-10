@@ -187,7 +187,6 @@ plot_compare_scales <- ggplot(df.plot, aes(x = PR.prediction_rescaled_after_comp
 
 plot_compare_scales
 
-
 ####################################
 # 8 - Now, we compare the coefficients obtained with our method and scaled back,
 #     with the original ones and the obtained by polyreg in the original scale.
@@ -204,7 +203,6 @@ polyreg_betas <- polyreg_betas[order(factor(names(polyreg_betas), levels = colna
 polyreg_betas=t(as.matrix(polyreg_betas))
 
 # DF con betas originales, polyreg y formula.
-
 df <- as.data.frame(rbind(new_betas_rescaled, polyreg_betas, original_betas))
 df$Betas <- c("new betas rescaled formula", "new betas polyreg", "original betas")
 df <- melt(df, id.vars = "Betas")
