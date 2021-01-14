@@ -29,6 +29,7 @@ source("functions/performExampleAuto.R")
 source("functions/renameCoefsPolyreg.R")
 source("functions/rescale_coefs.R")
 source("functions/evaluatePR2D.R")
+source("functions/performExampleFromNN.R")
 
 ####################################
 # 3 - Generate data and perform the computations as in the performance examples.
@@ -154,7 +155,7 @@ new_betas_rescaled
 #     should be the same as the Y obtained with the scaled data, the betas obtained
 #     in the scaled space, and scaling back the Y to the original scale 
 #     with its centers and scales.
-#     To check that this has worked, the plot comparing both Y vaneeds to fall in the diagonal.
+#     To check that this has worked, the plot comparing both Y needs to fall in the diagonal.
 ####################################
 
 # Original scale data:
@@ -193,7 +194,7 @@ plot_compare_scales
 ####################################
 
 # Apply polyreg to the original data
-polynomial_original_scale <- polyreg::polyFit(original_train, deg = q_taylor, )
+polynomial_original_scale <- polyreg::polyFit(original_train, deg = q_taylor)
 
 # We need to rename the polyreg result with our notation.
 polyreg_betas <- renameCoefsPolyreg(polynomial_original_scale$fit$coefficients)
@@ -249,13 +250,13 @@ plot1
 x1=seq(from=0,to=10,length.out = 100)
 x2=seq(from=0,to=10,length.out = 100)
 
-# Obtain the surface for both polynomials. QUIZAS AÑADIR AQUI TB EL POLINO,IO ORGINAK
+# Obtain the surface for both polynomials.
 y_new=matrix(0,length(x1),length(x2))
 y_polyreg=matrix(0,length(x1),length(x2))
 for (i in 1:length(x1)){
   for (j in 1:length(x2)){
-    y_new[i,j]=evaluate_PR_2D(x1[i],x2[j],new_betas_rescaled)
-    y_polyreg[i,j]=evaluate_PR_2D(x1[i],x2[j],polyreg_betas)
+    y_new[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled)
+    y_polyreg[i,j]=evaluatePR2D(x1[i],x2[j],polyreg_betas)
   }
 }
 
@@ -278,8 +279,8 @@ y_new=matrix(0,length(x1),length(x2))
 y_polyreg=matrix(0,length(x1),length(x2))
 for (i in 1:length(x1)){
   for (j in 1:length(x2)){
-    y_new[i,j]=evaluate_PR_2D(x1[i],x2[j],new_betas_rescaled)
-    y_polyreg[i,j]=evaluate_PR_2D(x1[i],x2[j],polyreg_betas)
+    y_new[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled)
+    y_polyreg[i,j]=evaluatePR2D(x1[i],x2[j],polyreg_betas)
   }
 }
 
