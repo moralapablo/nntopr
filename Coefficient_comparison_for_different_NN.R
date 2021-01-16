@@ -33,7 +33,7 @@ source("functions/renameCoefsPolyreg.R")
 source("functions/rescale_coefs.R")
 source("functions/evaluatePR2D.R")
 source("functions/plotTaylorAndSynapticPotentials.R")
-source("functions/plotSurfaceComparison")
+source("functions/plotSurfaceComparison.R")
 
 ####################################
 # 3 - Generate data that will be used for all different NNs.
