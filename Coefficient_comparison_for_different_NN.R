@@ -137,17 +137,17 @@ scales <- (maxs - mins)
 # list containing the betas obtained in each NN:
 new_betas <- vector(mode = "list", length = 9)
 new_betas_rescaled <- vector(mode = "list", length = 9)
-for (i in 1:N){
+for (i in 1:N) {
   new_betas[[i]] <- examples[[i]]$coeff
   # Use our rescaling function to obtain the coefficients scaled back.
-  new_betas_rescaled[[i]] <- rescale_coefs(examples[[i]]$coeff,centers,scales)
+  new_betas_rescaled[[i]] <- rescale_coefs(examples[[i]]$coeff, centers, scales)
 }
 
 ####################################
 # 7 - Now we check that this has worked properly.
-#     To do so, the Y obtained with the original X data and the rescaled betas 
+#     To do so, the Y obtained with the original X data and the rescaled betas
 #     should be the same as the Y obtained with the scaled data, the betas obtained
-#     in the scaled space, and scaling back the Y to the original scale 
+#     in the scaled space, and scaling back the Y to the original scale
 #     with its centers and scales.
 #     To check that this has worked, the plot comparing both Y needs to fall in the diagonal.
 ####################################
@@ -159,21 +159,21 @@ n_test <- dim(original_test)[1]
 n_train <- dim(original_train)[1]
 
 plots_compare_scales <- vector(mode = "list", length = 9)
-for (j in 1:N){
+for (j in 1:N) {
   PR.prediction_rescaled <- rep(0, n_train)
   PR.prediction_rescaled_after_computing <- rep(0, n_train)
-  
+
   for (i in 1:n_train) {
     PR.prediction_rescaled[i] <- evaluatePR(original_train[i, seq(p)], new_betas_rescaled[[j]])
     PR.prediction_rescaled_after_computing[i] <- evaluatePR(train[i, seq(p)], new_betas[[j]])
   }
-  
+
   PR.prediction_rescaled_after_computing <- PR.prediction_rescaled_after_computing * scales[p + 1] + centers[p + 1]
-  
+
   # plots to compare results:
-  
+
   df.plot <- data.frame(PR.prediction_rescaled_after_computing, PR.prediction_rescaled)
-  
+
   plots_compare_scales[[j]] <- ggplot(df.plot, aes(x = PR.prediction_rescaled_after_computing, y = PR.prediction_rescaled)) +
     geom_point() +
     labs(x = "Scaling back after computing Y") +
@@ -181,16 +181,14 @@ for (j in 1:N){
     theme(plot.title = element_text(hjust = 0.5)) +
     geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_cowplot(12)
-
-  
 }
 
 
 plot_all_scale_comparisons <- plot_grid(plots_compare_scales[[1]],
-                               plots_compare_scales[[2]],
-                               plots_compare_scales[[3]],
-                               plots_compare_scales[[4]],
-                               labels = ""
+  plots_compare_scales[[2]],
+  plots_compare_scales[[3]],
+  plots_compare_scales[[4]],
+  labels = ""
 )
 
 plot_all_scale_comparisons
@@ -208,21 +206,25 @@ polyreg_betas <- renameCoefsPolyreg(polynomial_original_scale$fit$coefficients)
 # And we also reorder them to match our notation.
 polyreg_betas <- polyreg_betas[order(factor(names(polyreg_betas), levels = colnames(new_betas_rescaled[[1]])))]
 # Reshape as needed
-polyreg_betas=t(as.matrix(polyreg_betas))
+polyreg_betas <- t(as.matrix(polyreg_betas))
 
 # Data frame with new betas, polyreg betas and original ones
-df <- as.data.frame(rbind(new_betas_rescaled[[1]],
-                          new_betas_rescaled[[2]],
-                          new_betas_rescaled[[3]],
-                          new_betas_rescaled[[4]],
-                          polyreg_betas,
-                          original_betas))
-df$Betas <- c("new betas 1",
-              "new betas 2",
-              "new betas 3",
-              "new betas 4",
-              "new betas polyreg",
-              "original betas")
+df <- as.data.frame(rbind(
+  new_betas_rescaled[[1]],
+  new_betas_rescaled[[2]],
+  new_betas_rescaled[[3]],
+  new_betas_rescaled[[4]],
+  polyreg_betas,
+  original_betas
+))
+df$Betas <- c(
+  "new betas 1",
+  "new betas 2",
+  "new betas 3",
+  "new betas 4",
+  "new betas polyreg",
+  "original betas"
+)
 
 df <- melt(df, id.vars = "Betas")
 df$Betas <- as.factor(df$Betas)
@@ -240,10 +242,14 @@ plot_coeff_comparison
 
 # we can repeat this only with polyreg and the original ones:
 
-df <- as.data.frame(rbind(polyreg_betas,
-                          original_betas))
-df$Betas <- c("new betas polyreg",
-              "original betas")
+df <- as.data.frame(rbind(
+  polyreg_betas,
+  original_betas
+))
+df$Betas <- c(
+  "new betas polyreg",
+  "original betas"
+)
 
 df <- melt(df, id.vars = "Betas")
 df$Betas <- as.factor(df$Betas)
@@ -260,19 +266,62 @@ plot_coeff_comparison_only_polyreg
 
 
 ####################################
-# 9 - Plot 3D surfaces:
+# 9 - Plot 3D surfaces with input range and increased range:
 ####################################
 
-# Create a grid of values for x1 and x2
-x1=seq(from=1.5,to=7,length.out = 10)
-x2=seq(from=4.5,to=11,length.out = 10)
-
 # We need to give the same notationto the original betas
-original_betas <- matrix(original_betas,nrow = 1)
+original_betas <- matrix(original_betas, nrow = 1)
 colnames(original_betas) <- colnames(polyreg_betas)
 
-# Obtain also the predictions for the data set points in each case:
+# Create a grid of values for x1 and x2 in the input range
+x1 <- seq(from = 1.5, to = 7, length.out = 100)
+x2 <- seq(from = 4.5, to = 11, length.out = 100)
 
+# Create a grid of values for x1 and x2 in an extended range (denoted as _big)
+x1_big <- seq(from = -50, to = 50, length.out = 100)
+x2_big <- seq(from = -50, to = 50, length.out = 100)
+
+# Obtain the surface for all the polynomials:
+
+# Input range: Initiate variables
+y_new1 <- matrix(0, length(x1), length(x2))
+y_new2 <- matrix(0, length(x1), length(x2))
+y_new3 <- matrix(0, length(x1), length(x2))
+y_new4 <- matrix(0, length(x1), length(x2))
+y_polyreg <- matrix(0, length(x1), length(x2))
+y_original <- matrix(0, length(x1), length(x2))
+# Extended range: Initiate variables
+y_new1_big <- matrix(0, length(x1_big), length(x2_big))
+y_new2_big <- matrix(0, length(x1_big), length(x2_big))
+y_new3_big <- matrix(0, length(x1_big), length(x2_big))
+y_new4_big <- matrix(0, length(x1_big), length(x2_big))
+y_polyreg_big <- matrix(0, length(x1_big), length(x2_big))
+y_original_big <- matrix(0, length(x1_big), length(x2_big))
+
+# Input range: Loop
+for (i in 1:length(x1)) {
+  for (j in 1:length(x2)) {
+    y_new1[i, j] <- evaluatePR2D(x1[i], x2[j], new_betas_rescaled[[1]])
+    y_new2[i, j] <- evaluatePR2D(x1[i], x2[j], new_betas_rescaled[[2]])
+    y_new3[i, j] <- evaluatePR2D(x1[i], x2[j], new_betas_rescaled[[3]])
+    y_new4[i, j] <- evaluatePR2D(x1[i], x2[j], new_betas_rescaled[[4]])
+    y_polyreg[i, j] <- evaluatePR2D(x1[i], x2[j], polyreg_betas)
+    y_original[i, j] <- evaluatePR2D(x1[i], x2[j], original_betas)
+  }
+}
+# Extended range: Loop
+for (i in 1:length(x1_big)) {
+  for (j in 1:length(x2_big)) {
+    y_new1_big[i, j] <- evaluatePR2D(x1_big[i], x2_big[j], new_betas_rescaled[[1]])
+    y_new2_big[i, j] <- evaluatePR2D(x1_big[i], x2_big[j], new_betas_rescaled[[2]])
+    y_new3_big[i, j] <- evaluatePR2D(x1_big[i], x2_big[j], new_betas_rescaled[[3]])
+    y_new4_big[i, j] <- evaluatePR2D(x1_big[i], x2_big[j], new_betas_rescaled[[4]])
+    y_polyreg_big[i, j] <- evaluatePR2D(x1_big[i], x2_big[j], polyreg_betas)
+    y_original_big[i, j] <- evaluatePR2D(x1_big[i], x2_big[j], original_betas)
+  }
+}
+
+# Obtain also the predictions for the data set points in each case:
 
 PR.prediction_rescaled1 <- rep(0, n_train)
 PR.prediction_rescaled2 <- rep(0, n_train)
@@ -288,90 +337,105 @@ for (i in 1:n_train) {
   PR.prediction_polyreg_rescaled_data[i] <- evaluatePR(original_train[i, seq(p)], polyreg_betas)
 }
 
-# Obtain the surface for all the polynomials.
-y_new1 <- matrix(0,length(x1),length(x2))
-y_new2 <- matrix(0,length(x1),length(x2))
-y_new3 <- matrix(0,length(x1),length(x2))
-y_new4 <- matrix(0,length(x1),length(x2))
-y_polyreg <- matrix(0,length(x1),length(x2))
-y_original <- matrix(0,length(x1),length(x2))
-
-for (i in 1:length(x1)){
-  for (j in 1:length(x2)){
-    y_new1[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[1]])
-    y_new2[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[2]])
-    y_new3[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[3]])
-    y_new4[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[4]])
-    y_polyreg[i,j]=evaluatePR2D(x1[i],x2[j],polyreg_betas)
-    y_original[i,j]=evaluatePR2D(x1[i],x2[j],original_betas)
-  }
-}
-
-theta_vision=150
-
-plot3D::persp3D(x1,x2,y_new1, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 1")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled1, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_new2, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 2")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled2, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_new3, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 3")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled3, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_new4, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 4")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled4, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_polyreg, theta=theta_vision, phi = 15,xlab = "x1",ylab = "x2",zlab="y",main="Polyreg Polynomial")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_polyreg_rescaled_data, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_original, theta=theta_vision, phi = 15,xlab = "x1",ylab = "x2",zlab="y",main="Original Polynomial")
-plot3D::points3D(original_train[,1], original_train[,2], original_train[, p+1], colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
 
 
-####################################
-# 10 - Plot 3D surfaces Increasing the range:
-####################################
+# Visuzalization parameters:
+my_theta <- 130
+my_phi <- 25
+my_breaks <- seq(from = -25000, to = 25000, by = 1000)
 
-# Create a grid of values for x1 and x2
-x1=seq(from=-50,to=50,length.out = 10)
-x2=seq(from=-50,to=50,length.out = 10)
+# Polynomial from NN 1
+plotSurfaceComparison(
+  x1,
+  x2,
+  y_new1,
+  original_train[, 1],
+  original_train[, 2],
+  PR.prediction_rescaled1,
+  x1_big,
+  x2_big,
+  y_new1_big,
+  my_breaks,
+  my_theta,
+  my_phi
+)
 
-# Obtain the surface for all the polynomials.
-y_new1 <- matrix(0,length(x1),length(x2))
-y_new2 <- matrix(0,length(x1),length(x2))
-y_new3 <- matrix(0,length(x1),length(x2))
-y_new4 <- matrix(0,length(x1),length(x2))
-y_polyreg <- matrix(0,length(x1),length(x2))
-y_original <- matrix(0,length(x1),length(x2))
+# Polynomial from NN 2
+plotSurfaceComparison(
+  x1,
+  x2,
+  y_new2,
+  original_train[, 1],
+  original_train[, 2],
+  PR.prediction_rescaled2,
+  x1_big,
+  x2_big,
+  y_new2_big,
+  my_breaks,
+  my_theta,
+  my_phi
+)
 
-for (i in 1:length(x1)){
-  for (j in 1:length(x2)){
-    y_new1[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[1]])
-    y_new2[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[2]])
-    y_new3[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[3]])
-    y_new4[i,j]=evaluatePR2D(x1[i],x2[j],new_betas_rescaled[[4]])
-    y_polyreg[i,j]=evaluatePR2D(x1[i],x2[j],polyreg_betas)
-    y_original[i,j]=evaluatePR2D(x1[i],x2[j],original_betas)
-  }
-}
+# Polynomial from NN 3
+plotSurfaceComparison(
+  x1,
+  x2,
+  y_new3,
+  original_train[, 1],
+  original_train[, 2],
+  PR.prediction_rescaled3,
+  x1_big,
+  x2_big,
+  y_new3_big,
+  my_breaks,
+  my_theta,
+  my_phi
+)
 
+# Polynomial from NN 4
+plotSurfaceComparison(
+  x1,
+  x2,
+  y_new4,
+  original_train[, 1],
+  original_train[, 2],
+  PR.prediction_rescaled4,
+  x1_big,
+  x2_big,
+  y_new4_big,
+  my_breaks,
+  my_theta,
+  my_phi
+)
 
+# Polynomial from polyreg
+plotSurfaceComparison(
+  x1,
+  x2,
+  y_polyreg,
+  original_train[, 1],
+  original_train[, 2],
+  PR.prediction_polyreg_rescaled_data,
+  x1_big,
+  x2_big,
+  y_polyreg_big,
+  my_breaks,
+  my_theta,
+  my_phi
+)
 
-plot3D::persp3D(x1,x2,y_new1, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 1")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled1, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_new2, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 2")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled2, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_new3, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 3")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled3, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_new4, theta=theta_vision, phi = 15, xlab = "x1",ylab = "x2",zlab="y",main="Obtained Polynomial 4")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_rescaled4, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_polyreg, theta=theta_vision, phi = 15,xlab = "x1",ylab = "x2",zlab="y",main="Polyreg Polynomial")
-plot3D::points3D(original_train[,1], original_train[,2], PR.prediction_polyreg_rescaled_data, colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
-plot3D::persp3D(x1,x2,y_original, theta=theta_vision, phi = 15,xlab = "x1",ylab = "x2",zlab="y",main="Original Polynomial")
-plot3D::points3D(original_train[,1], original_train[,2], original_train[, p+1], colvar=NULL, col = "black", bg="red", size = 30, pch = 23, add=T)
-
+# Original Polynomial
+plotSurfaceComparison(
+  x1,
+  x2,
+  y_original,
+  original_train[, 1],
+  original_train[, 2],
+  original_train[, p + 1],
+  x1_big,
+  x2_big,
+  y_original_big,
+  my_breaks,
+  my_theta,
+  my_phi
+)
