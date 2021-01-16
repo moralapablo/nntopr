@@ -1,4 +1,4 @@
-plotSurfaceComparison <- function(x1,x2,y,train_x1,train_x2,prediction,x1_big,x2_big,y_big, my_breaks,my_theta,my_phi){
+plotSurfaceComparison <- function(x1, x2, y, train_x1, train_x2, prediction, x1_big, x2_big, y_big, my_breaks, my_theta, my_phi, title1, title2){
   # Polynomial in input range
   par(mfrow=c(1,2))
   plot3D::persp3D(x1,
@@ -28,6 +28,8 @@ plotSurfaceComparison <- function(x1,x2,y,train_x1,train_x2,prediction,x1_big,x2
                   theta = my_theta,
                   breaks = my_breaks,
                   phi = my_phi,
+                  image = TRUE,
+                  contour = TRUE,
                   xlab = "x1", ylab = "x2",
                   zlab = "y"
   )
