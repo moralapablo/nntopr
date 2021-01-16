@@ -18,6 +18,7 @@ library(cowplot)
 library(reshape)
 library(latex2exp)
 library(plot3D)
+library(RColorBrewer)
 
 ####################################
 # 2 - Load and define all needed functions
@@ -122,7 +123,13 @@ plot_all_examples <- plot_grid(examples_plot[[1]],
   labels = ""
 )
 
+
+# Save the plot as eps file
+setEPS()
+postscript("temporal/Performance_examples_for_Coef_comparison.eps")
 plot_all_examples
+dev.off()
+
 
 ####################################
 # 6 - Obtain the equivalent coefficients of our formula in the original scale:
@@ -230,15 +237,26 @@ df$Betas <- c(
 df <- melt(df, id.vars = "Betas")
 df$Betas <- as.factor(df$Betas)
 
+
+# Set up color palette to retain the 2 last colors for the only polyreg comparison
+my_colors <- brewer.pal(n = N+2, name = "Set1")
+
 plot_coeff_comparison <- ggplot(df, aes(fill = Betas, y = value, x = variable)) +
   geom_col(position = "dodge") +
   theme_cowplot(12) +
   xlab("Beta coeficcients") +
   ylab("Values") +
+  scale_fill_manual(values = my_colors) +
   geom_hline(yintercept = 0) +
   theme(axis.text.x = element_text(angle = 65, vjust = 1, hjust = 1))
 
 plot_coeff_comparison
+
+# Save the plot as eps file
+setEPS()
+postscript("temporal/Coef_comparison_all.eps")
+plot_coeff_comparison
+dev.off()
 
 
 # we can repeat this only with polyreg and the original ones:
@@ -260,11 +278,17 @@ plot_coeff_comparison_only_polyreg <- ggplot(df, aes(fill = Betas, y = value, x 
   theme_cowplot(12) +
   xlab("Beta coeficcients") +
   ylab("Values") +
+  scale_fill_manual(values = my_colors[(N+1):(N+2)]) +
   geom_hline(yintercept = 0) +
   theme(axis.text.x = element_text(angle = 65, vjust = 1, hjust = 1))
 
 plot_coeff_comparison_only_polyreg
 
+# Save the plot as eps file
+setEPS()
+postscript("temporal/Coef_comparison_only_polyreg.eps")
+plot_coeff_comparison_only_polyreg
+dev.off()
 
 ####################################
 # 9 - Plot 3D surfaces with input range and increased range:
@@ -339,12 +363,14 @@ for (i in 1:n_train) {
 }
 
 
-
 # Visuzalization parameters:
 my_theta <- 130
 my_phi <- 25
 my_breaks <- seq(from = -25000, to = 25000, by = 1000)
 
+
+
+# IMPORTANT: These following plots are intended to be saved manually.
 # Polynomial from NN 1
 plotSurfaceComparison(
   x1,
@@ -358,8 +384,10 @@ plotSurfaceComparison(
   y_new1_big,
   my_breaks,
   my_theta,
-  my_phi
+  my_phi,
+  "Example with Neural Network 1"
 )
+
 
 # Polynomial from NN 2
 plotSurfaceComparison(
@@ -374,7 +402,8 @@ plotSurfaceComparison(
   y_new2_big,
   my_breaks,
   my_theta,
-  my_phi
+  my_phi,
+  "Example with Neural Network 2"
 )
 
 # Polynomial from NN 3
@@ -390,7 +419,8 @@ plotSurfaceComparison(
   y_new3_big,
   my_breaks,
   my_theta,
-  my_phi
+  my_phi,
+  "Example with Neural Network 3"
 )
 
 # Polynomial from NN 4
@@ -406,7 +436,8 @@ plotSurfaceComparison(
   y_new4_big,
   my_breaks,
   my_theta,
-  my_phi
+  my_phi,
+  "Example with Neural Network 4"
 )
 
 # Polynomial from polyreg
@@ -422,7 +453,8 @@ plotSurfaceComparison(
   y_polyreg_big,
   my_breaks,
   my_theta,
-  my_phi
+  my_phi,
+  "Example with 'polyreg'"
 )
 
 # Original Polynomial
@@ -438,5 +470,10 @@ plotSurfaceComparison(
   y_original_big,
   my_breaks,
   my_theta,
-  my_phi
+  my_phi,
+  "Original polynomial"
 )
+
+
+
+
