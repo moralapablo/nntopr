@@ -142,7 +142,7 @@ plot_together <- plot_grid(plot_example_1,
                            plot_example_2, 
                            labels = c("(1)", "(2)"), 
                            nrow = 2,
-                           scale = 0.95)
+                           scale = 0.8)
 
 plot_together
 

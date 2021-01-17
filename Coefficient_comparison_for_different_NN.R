@@ -123,7 +123,7 @@ plot_all_examples <- plot_grid(examples_plot[[1]],
   examples_plot[[3]],
   examples_plot[[4]],
   labels = c("(1)", "(2)", "(3)", "(4)"),
-  scale = 0.9
+  scale = 0.8
 )
 
 
@@ -312,13 +312,14 @@ final_coeff_comparison <- plot_grid(plot_coeff_comparison,
                                     scale = 1
                                     )
 final_coeff_comparison
-
+# Due to some technical problems I save it manually setting width 600, height 300.
+# This should be fixed later to automate it.
 
 # Save the plot as eps file
-setEPS()
-postscript("temporal/Coef_comparison.eps")
-final_coeff_comparison
-dev.off()
+# setEPS()
+# postscript("temporal/Coef_comparison.eps")
+# final_coeff_comparison
+# dev.off()
 
 ####################################
 # 9 - Plot 3D surfaces with input range and increased range:
