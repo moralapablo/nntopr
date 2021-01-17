@@ -130,34 +130,22 @@ postscript("temporal/Performance_Example_2.eps")
 plot_example_2
 dev.off()
 
-####################################
-# 4.3 - Example 3
-####################################
-
-# Parameters
-my_seed <- 123
-h_1 <- 4
-q_taylor <- 3
-scale_method <- "-1,1"
-fun <- function(x) tanh(x) # Hyperbolic Tangent
-
-# Plot:
-taylor_interval <- 2.5
-plot_example_3 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_method, taylor_interval)
-plot_example_3
-
-# Save the plot as eps file
-setEPS()
-postscript("temporal/Performance_Example_3.eps")
-plot_example_3
-dev.off()
-
 
 ####################################
 # 5 - Merge Examples to plot in a more compact way.
 ####################################
 
 
+plot_together <- plot_grid(plot_example_1, 
+                           plot_example_2, 
+                           labels = c("(1)", "(2)"), 
+                           nrow = 2,
+                           scale = 0.95)
 
+plot_together
 
-
+# Save the plot as eps file
+setEPS()
+postscript("temporal/Performance_Examples_Together.eps")
+plot_together
+dev.off()
