@@ -19,6 +19,7 @@ library(reshape)
 library(latex2exp)
 library(plot3D)
 library(RColorBrewer)
+library(lemon)
 
 ####################################
 # 2 - Load and define all needed functions
@@ -226,38 +227,39 @@ df <- as.data.frame(rbind(
   polyreg_betas,
   original_betas
 ))
-df$Betas <- c(
-  "new betas 1",
-  "new betas 2",
-  "new betas 3",
-  "new betas 4",
-  "new betas polyreg",
-  "original betas"
+df$Coefficients <- c(
+  "Example NN 1",
+  "Example NN 2",
+  "Example NN 3",
+  "Example NN 4",
+  "Polyreg",
+  "Original"
 )
 
-df <- melt(df, id.vars = "Betas")
-df$Betas <- as.factor(df$Betas)
+df <- melt(df, id.vars = "Coefficients")
+df$Betas <- as.factor(df$Coefficients)
 
 
 # Set up color palette to retain the 2 last colors for the only polyreg comparison
 my_colors <- brewer.pal(n = N+2, name = "Set1")
 
-plot_coeff_comparison <- ggplot(df, aes(fill = Betas, y = value, x = variable)) +
+plot_coeff_comparison <- ggplot(df, aes(fill = Coefficients, y = value, x = variable)) +
   geom_col(position = "dodge") +
   theme_cowplot(12) +
-  xlab("Beta coeficcients") +
+  xlab("Coefficients") +
   ylab("Values") +
   scale_fill_manual(values = my_colors) +
+  labs(fill = "Obtained from") +
   geom_hline(yintercept = 0) +
   theme(axis.text.x = element_text(angle = 65, vjust = 1, hjust = 1))
 
 plot_coeff_comparison
 
 # Save the plot as eps file
-setEPS()
-postscript("temporal/Coef_comparison_all.eps")
-plot_coeff_comparison
-dev.off()
+# setEPS()
+# postscript("temporal/Coef_comparison_all.eps")
+# plot_coeff_comparison
+# dev.off()
 
 
 # we can repeat this only with polyreg and the original ones:
@@ -266,29 +268,53 @@ df <- as.data.frame(rbind(
   polyreg_betas,
   original_betas
 ))
-df$Betas <- c(
-  "new betas polyreg",
-  "original betas"
+df$Coefficients <- c(
+  "Polyreg",
+  "Original"
 )
 
-df <- melt(df, id.vars = "Betas")
-df$Betas <- as.factor(df$Betas)
+df <- melt(df, id.vars = "Coefficients")
+df$Betas <- as.factor(df$Coefficients)
 
-plot_coeff_comparison_only_polyreg <- ggplot(df, aes(fill = Betas, y = value, x = variable)) +
+plot_coeff_comparison_only_polyreg <- ggplot(df, aes(fill = Coefficients, y = value, x = variable)) +
   geom_col(position = "dodge") +
   theme_cowplot(12) +
-  xlab("Beta coeficcients") +
+  xlab("Coefficients") +
   ylab("Values") +
   scale_fill_manual(values = my_colors[(N+1):(N+2)]) +
+  labs(fill = "Obtained from") +
   geom_hline(yintercept = 0) +
   theme(axis.text.x = element_text(angle = 65, vjust = 1, hjust = 1))
 
 plot_coeff_comparison_only_polyreg
 
 # Save the plot as eps file
+# setEPS()
+# postscript("temporal/Coef_comparison_only_polyreg.eps")
+# plot_coeff_comparison_only_polyreg
+# dev.off()
+
+#####
+# Combine both previous plots
+#####
+
+# Remove the legend from the second plot
+plot_coeff_comparison_only_polyreg <- plot_coeff_comparison_only_polyreg + theme(legend.position="none")
+
+# Reposition the legend in the first one.
+plot_coeff_comparison <- lemon::reposition_legend(plot_coeff_comparison, 'top right')
+
+final_coeff_comparison <- plot_grid(plot_coeff_comparison,
+                                    plot_coeff_comparison_only_polyreg,
+                                    labels = c("A", "B"),
+                                    scale = 1
+                                    )
+final_coeff_comparison
+
+# Save the plot as eps file
 setEPS()
-postscript("temporal/Coef_comparison_only_polyreg.eps")
-plot_coeff_comparison_only_polyreg
+postscript("temporal/Coef_comparison.eps")
+final_coeff_comparison
 dev.off()
 
 ####################################
