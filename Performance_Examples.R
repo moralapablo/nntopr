@@ -132,6 +132,7 @@ plot_example_2
 # dev.off()
 
 
+
 ####################################
 # 5 - Merge Examples to plot in a more compact way.
 ####################################
