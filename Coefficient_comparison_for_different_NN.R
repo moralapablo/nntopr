@@ -19,6 +19,7 @@ library(reshape)
 library(latex2exp)
 library(plot3D)
 library(RColorBrewer)
+library(scales)
 library(lemon)
 
 ####################################
@@ -241,7 +242,8 @@ df$Betas <- as.factor(df$Coefficients)
 
 
 # Set up color palette to retain the 2 last colors for the only polyreg comparison
-my_colors <- brewer.pal(n = N+2, name = "Set1")
+my_colors <- scales::hue_pal()(6) #using default ggplot2 colors
+#my_colors <- brewer.pal(n = 7, name = "Dark2")[c(1,2,3,4,5,6)] # Using RColorBrewer
 
 plot_coeff_comparison <- ggplot(df, aes(fill = Coefficients, y = value, x = variable)) +
   geom_col(position = "dodge") +
@@ -310,6 +312,7 @@ final_coeff_comparison <- plot_grid(plot_coeff_comparison,
                                     scale = 1
                                     )
 final_coeff_comparison
+
 
 # Save the plot as eps file
 setEPS()
