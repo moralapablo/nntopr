@@ -70,7 +70,7 @@ performExampleAuto <- function(n_sample, p, q_original, mean_range, beta_range, 
     #ggtitle("PR vs NN") +
     theme_cowplot(12)
 
-  plot <- plot_grid(plot1, plot2, labels = c("a)", "b)"))
+  plot <- plot_grid(plot1, plot2, labels = c("A", "B"))
 
   # MSE:
 

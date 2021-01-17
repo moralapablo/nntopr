@@ -78,7 +78,7 @@ plotPerfomanceExample <- function(my_seed, h_1, q_taylor, fun, scale_method, tay
   plot_taylor <- plotTaylorAndSynapticPotentials(example, fun, x, tol, q_taylor, title)
 
   # Combine the plots
-  plot <- plot_grid(plot.example, plot_taylor, labels = c("", "c)"), nrow = 2)
+  plot <- plot_grid(plot.example, plot_taylor, labels = c("", "C"), nrow = 2)
 
   return(plot)
 }
@@ -151,5 +151,13 @@ setEPS()
 postscript("temporal/Performance_Example_3.eps")
 plot_example_3
 dev.off()
+
+
+####################################
+# 5 - Merge Examples to plot in a more compact way.
+####################################
+
+
+
 
 
