@@ -125,6 +125,7 @@ plot_example_2 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_metho
 plot_example_2
 
 # Save the plot as eps file
+
 # setEPS()
 # postscript("temporal/Performance_Example_2.eps")
 # plot_example_2
