@@ -37,7 +37,7 @@ performExampleFromNN <- function(train, test, nn, fun, q_taylor) {
     geom_abline(slope = 1, intercept = 0, color = "red") +
     labs(y = "Original Y") +
     labs(x = "Predicted Y with NN") +
-    ggtitle("NN vs Y") +
+    #ggtitle("NN vs Y") +
     theme_cowplot(12) +
     theme(plot.title = element_text(hjust = 0.5, size = 10)) +
     theme(axis.text = element_text(size = 8), axis.title = element_text(size = 8))
@@ -47,7 +47,7 @@ performExampleFromNN <- function(train, test, nn, fun, q_taylor) {
     geom_abline(slope = 1, intercept = 0, color = "red") +
     labs(y = "Predicted Y with NN") +
     labs(x = "Predicted Y with PR") +
-    ggtitle("PR vs NN") +
+    #ggtitle("PR vs NN") +
     theme_cowplot(12) +
     theme(plot.title = element_text(hjust = 0.5, size = 10)) +
     theme(axis.text = element_text(size = 8), axis.title = element_text(size = 8))

@@ -70,7 +70,7 @@ plotTaylorAndSynapticPotentials <- function(example, fun, x, tol, q_taylor, titl
     geom_vline(xintercept = error2, color = "gray", linetype = "dashed") +
     annotation_custom(ggplotGrob(plot.density), ymin = 0, ymax = 3) +
     theme_cowplot(12) +
-    ggtitle(title) +
+    #ggtitle(title) +
     theme(plot.title = element_text(hjust = 0.5, size = 10)) +
     theme(axis.text = element_text(size = 10), axis.title = element_text(size = 10))
 
