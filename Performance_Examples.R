@@ -75,10 +75,10 @@ plotPerfomanceExample <- function(my_seed, h_1, q_taylor, fun, scale_method, tay
   tol <- 0.1
   title <- "Taylor approximation and input values distribution"
 
-  p <- plotTaylorAndSynapticPotentials(example, fun, x, tol, q_taylor, title)
+  plot_taylor <- plotTaylorAndSynapticPotentials(example, fun, x, tol, q_taylor, title)
 
   # Combine the plots
-  plot <- plot_grid(plot.example, p, labels = c("", "c)"), nrow = 2)
+  plot <- plot_grid(plot.example, plot_taylor, labels = c("", "c)"), nrow = 2)
 
   return(plot)
 }
