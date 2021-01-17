@@ -6,10 +6,6 @@
 ####################################
 # 1 - Load all needed libraries
 ####################################
-# library(gtools)
-# library(neuralnet)
-# library(pracma)
-# library(mvtnorm)
 library(ggplot2)
 library(cowplot)
 
@@ -71,12 +67,8 @@ for (q in seq(2, q_max, 2)) {
   plots[[q]] <- taylor_expansion_error(f, q, tol, x, title) + ylim(-0.5, 5) + theme(plot.title = element_text(size = 10))
 }
 
-# Combine all plots together:
-plot <- plot_grid(plots[[2]], plots[[4]], plots[[6]], plots[[8]], labels = c(""))
 
-title <- ggdraw() + draw_label("Softplus Taylor approximation at 0", fontface = "bold", size = 10)
-
-plot1 <- plot_grid(title, plot, ncol = 1, rel_heights = c(0.1, 1))
+plot1 <- plot_grid(plots[[2]], plots[[4]], plots[[6]], plots[[8]], labels = c(""))
 
 plot1
 
@@ -104,11 +96,7 @@ for (q in seq(1, q_max, 2)) {
 }
 
 # Combine all plots together:
-plot = plot_grid(plots[[1]], plots[[3]],plots[[5]],plots[[7]], labels = c("")) 
-
-title <- ggdraw() + draw_label("Hyperbolic tangent Taylor approximation at 0", fontface = "bold", size = 10)
-
-plot2 <- plot_grid(title, plot, ncol = 1, rel_heights = c(0.1, 1))
+plot2 = plot_grid(plots[[1]], plots[[3]],plots[[5]],plots[[7]], labels = c("")) 
 
 plot2
 
@@ -136,11 +124,12 @@ for (q in seq(1, q_max, 2)) {
 }
 
 # Combine all plots together:
-plot = plot_grid(plots[[1]], plots[[3]],plots[[5]],plots[[7]], labels = c("")) 
-
-title <- ggdraw() + draw_label("Sigmoid Taylor approximation at 0", fontface = "bold", size = 10)
-
-plot3 <- plot_grid(title, plot, ncol = 1, rel_heights = c(0.1, 1))
+plot3 = plot_grid(plots[[1]], plots[[3]],plots[[5]],plots[[7]], labels = c("")) 
 
 plot3
 
+# Save the plot as eps file in temporal file:
+setEPS()
+postscript("temporal/Taylor_expansion_sigmoid.eps")
+plot3
+dev.off()
