@@ -125,10 +125,17 @@ plot_example_2 <- plotPerfomanceExample(my_seed, h_1, q_taylor, fun, scale_metho
 plot_example_2
 
 # Save the plot as eps file
+<<<<<<< HEAD
 # setEPS()
 # postscript("temporal/Performance_Example_2.eps")
 # plot_example_2
 # dev.off()
+=======
+setEPS()
+postscript("temporal/Performance_Example_2.eps")
+plot_example_2
+dev.off()
+>>>>>>> e818bd85078191589d0502e2e7bdbd86017cbb51
 
 
 ####################################
