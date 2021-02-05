@@ -111,7 +111,7 @@ for (i in 1:N) {
   plot_taylor <- plotTaylorAndSynapticPotentials(examples[[i]], fun, x, tol, q_taylor, title)
 
   # Combine the plots
-  plot <- plot_grid(examples[[i]]$plot, plot_taylor, labels = c("", "C"), nrow = 2)
+  plot <- plot_grid(examples[[i]]$plot, plot_taylor, labels = c("", "C"), nrow = 2,  label_size = 10)
 
   examples_plot[[i]] <- plot
 }
@@ -123,6 +123,7 @@ plot_all_examples <- plot_grid(examples_plot[[1]],
   examples_plot[[3]],
   examples_plot[[4]],
   labels = c("(1)", "(2)", "(3)", "(4)"),
+  label_size = 12,
   scale = 0.8
 )
 

@@ -78,7 +78,7 @@ plotPerfomanceExample <- function(my_seed, h_1, q_taylor, fun, scale_method, tay
   plot_taylor <- plotTaylorAndSynapticPotentials(example, fun, x, tol, q_taylor, title)
 
   # Combine the plots
-  plot <- plot_grid(plot.example, plot_taylor, labels = c("", "C"), nrow = 2)
+  plot <- plot_grid(plot.example, plot_taylor, labels = c("", "C"), nrow = 2, label_size = 10)
 
   return(plot)
 }
@@ -140,9 +140,10 @@ plot_example_2
 
 plot_together <- plot_grid(plot_example_1, 
                            plot_example_2, 
-                           labels = c("(1)", "(2)"), 
+                           labels = c("(1)", "(2)"),
+                           label_size = 12,
                            nrow = 2,
-                           scale = 0.8)
+                           scale = 0.9)
 
 plot_together
 

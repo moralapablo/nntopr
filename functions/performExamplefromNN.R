@@ -52,7 +52,7 @@ performExampleFromNN <- function(train, test, nn, fun, q_taylor) {
     theme(plot.title = element_text(hjust = 0.5, size = 10)) +
     theme(axis.text = element_text(size = 8), axis.title = element_text(size = 8))
 
-  plot <- plot_grid(plot1, plot2, labels = c("A", "B"))
+  plot <- plot_grid(plot1, plot2, labels = c("A", "B"), scale = 0.9, label_size = 10)
 
   # MSE:
 
